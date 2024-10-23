@@ -1,14 +1,67 @@
-const groupSchema = new mongoose.Schema({
-  name: { type: String, required: true },  // Group name
-  groupCode: { type: String, unique: true }, // For private groups
-  groupType: { type: String, enum: ['open', 'private'], required: true },  // Group type
-  admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Admin of the group
-  members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],  // Group members
-  expiryTime: { type: Date, required: true },  // Expiry time (1 hr 11 mins from creation)
-  chatLocked: { type: Boolean, default: false },  // Admin can lock chat
-  songQueue: [{ type: String }],  // List of Spotify track URIs for group queue
-  userQueue: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],  // User queue for turn-by-turn playback
-  createdAt: { type: Date, default: Date.now }
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const groupSchema = new Schema({
+  name: { 
+    type: String, 
+    required: true 
+  },  
+  groupCode: { 
+    type: String, 
+    unique: true, 
+    required: function() { return this.groupType === 'private'; }  // Required for private groups
+  }, 
+  groupType: { 
+    type: String, 
+    enum: ['open', 'private'], 
+    required: true 
+  },  
+  admin: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    required: true 
+  },  
+  members: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User' 
+  }],  
+  expiryTime: { 
+    type: Date, 
+    required: true, 
+    default: () => new Date(Date.now() + 71 * 60000) // 1 hour 11 mins from creation
+  },  
+  chatLocked: { 
+    type: Boolean, 
+    default: false 
+  },  
+  songQueue: [{ 
+    type: String  // Spotify track URIs
+  }],  
+  userQueue: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User' 
+  }],  
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
+  },
+  maxMembers: {
+    type: Number,
+    default: 10, // Max size of the group
+    required: true
+  },
+  isExpired: { 
+    type: Boolean, 
+    default: false 
+  }
+});
+
+// Before saving, ensure the group does not exceed the maximum member size
+groupSchema.pre('save', function(next) {
+  if (this.members.length > this.maxMembers) {
+    return next(new Error('Group cannot exceed maximum size of 10 members'));
+  }
+  next();
 });
 
 module.exports = mongoose.model('Group', groupSchema);

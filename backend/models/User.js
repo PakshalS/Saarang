@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   refreshToken: { type: String }, // Spotify OAuth refresh token
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Friends in your app
   friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Pending friend requests
-  activeGroups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
+  activeGroup: { type: mongoose.Schema.Types.ObjectId, ref: 'Group', default: null },  // Active group, null if not in any
   createdAt: { type: Date, default: Date.now }
 });
 
