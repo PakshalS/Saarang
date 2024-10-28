@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
-const groupRoutes = require('./routes/grouproutes');
+// const groupRoutes = require('./routes/grouproutes');
 require('dotenv').config();
 require('./config/passport');  
 const app = express();
@@ -39,7 +39,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Auth routes
 app.use('/auth', authRoutes);
 //Group routes
-app.use('/group',groupRoutes);
+// app.use('/group',groupRoutes);
 
 
 // Redirect to login if user is not authenticated
