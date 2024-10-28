@@ -22,11 +22,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Initial Route
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server running on port ${process.env.PORT || 3000}`);
-  app.get('/', (req, res) => {
-    res.send('Hello, world!');
-  });
+// app.listen(process.env.PORT || 3000, () => {
+//   console.log(`Server running on port ${process.env.PORT || 3000}`);
+//   app.get('/', (req, res) => {
+//     res.send('Hello, world!');
+//   });
+// });
+app.get('/', (req, res) => {
+  res.send('Hello, world!');
 });
 
 // MongoDB connection
