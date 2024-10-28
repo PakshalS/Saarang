@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const cookieSession = require('cookie-session');
 const authRoutes = require('./routes/auth');
 const groupRoutes = require('./routes/grouproutes');
 require('dotenv').config();
@@ -21,7 +20,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Initial Route
+// Initial Route
 // app.listen(process.env.PORT || 3000, () => {
 //   console.log(`Server running on port ${process.env.PORT || 3000}`);
 //   app.get('/', (req, res) => {
