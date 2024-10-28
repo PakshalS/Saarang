@@ -48,3 +48,5 @@ app.use('/group',groupRoutes);
 app.get('/dashboard',isLoggedIn, (req, res) => {
   res.send(`Welcome, ${req.user.displayName}!`);
 });
+
+module.exports = app; // or export default app if using ES modules
