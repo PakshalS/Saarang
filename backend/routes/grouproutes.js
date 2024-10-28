@@ -1,5 +1,5 @@
 const {leaveGroup , joinGroup , createGroup} = require('../controllers/groupcontroller');
-const ensureAuthenticated = require('../middleware/authmiddleware');
+const {ensureAuthenticated} = require('../middleware/authmiddleware');
 const express = require('express');
 const router = express.Router();
 

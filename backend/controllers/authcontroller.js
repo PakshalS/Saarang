@@ -7,32 +7,28 @@ const spotifyLogin = passport.authenticate('spotify', {
 
 // Spotify callback handler
 const spotifyCallback = passport.authenticate('spotify', {
-  failureRedirect: '/login',
-  successRedirect: '/dashboard'  // Redirect to your app's dashboard on success
+  failureRedirect: '/',
+  successRedirect: '/dashboard' ,  // Redirect to login if the authorization code is invalid
+  failureMessage: true  // Redirect to your app's dashboard on success
 });
 
-// Logout handler 
-const logout = async (req, res, next) => {
-  try {
-    await req.logout((err) => {
-      if (err) {
-        throw err;
-      }
-    });
 
-    await req.session.destroy((err) => {
-      if (err) {
-        throw err;
-      }
-      res.redirect('/');  // Redirect to homepage after successful logout
+// Logout handler 
+const logout = (req, res, next) => {
+      req.session = null; 
+      req.logout((err) => {
+        if (err) {
+          return next(err);  
+        }
+      console.log('User logged out, session destroyed, and cookie cleared');
     });
-  } catch (error) {
-    next(error); 
+    res.redirect('/');
   }
-};
+
+
 
 module.exports = {
   spotifyLogin,
   spotifyCallback,
-  logout
+  logout,
 };
