@@ -18,7 +18,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new SpotifyStrategy({
   clientID: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  callbackURL: "https://saarang.vercel.app/auth/spotify/callback",
+  callbackURL: "http://localhost:3000/auth/spotify/callback",
 }, async function(accessToken, refreshToken, profile, done) {
   try {
     let user = await User.findOne({ spotifyId: profile.id });
